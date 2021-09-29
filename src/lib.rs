@@ -13,6 +13,10 @@ mod tests {
 
     #[test]
     fn it_works() {
-        expect!(&Some('a')).to_contain(&'b').conclude_panic();
+        let a: Result<u32, u64> = Err(10);
+
+        expect!(&a)
+            .to_be_ok_with(&69)
+            .conclude_panic();
     }
 }
