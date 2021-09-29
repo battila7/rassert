@@ -13,8 +13,8 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let expected = 20;
-
-        let _ = expect!(&12).to_equal(&expected).conclude_panic();
+        expect!(&(20 == 20))
+            .to_be_false()
+            .conclude_panic();
     }
 }

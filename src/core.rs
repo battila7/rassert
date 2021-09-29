@@ -57,6 +57,7 @@ impl<'a, T> ExpectationChain<'a, T> {
         }
     }
 
+    #[allow(clippy::should_implement_trait)]
     pub fn not(mut self) -> Self {
         self.in_negated_mode = !self.in_negated_mode;
 
