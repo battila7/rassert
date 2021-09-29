@@ -93,13 +93,21 @@ impl<'a, T> ExpectationChain<'a, T> {
         message.push_str(&format!("    {}\n\n", self.expression.tested_expression));
 
         let mut had_failure = false;
-        for expectation in self.expectations {
-            if !expectation.test(self.expression.actual) {
+        for i in 0..self.expectations.len() {
+            let expectation = self.expectations.get(i).unwrap();
+            let is_negated = self.negations.get(i).unwrap();
+
+            if !(is_negated ^ expectation.test(self.expression.actual)) {
                 had_failure = true;
 
                 let failure_message =
                     expectation.message(self.expression.tested_expression, self.expression.actual);
-                let failure_message = indented("  ", &failure_message);
+                let failure_message = if *is_negated {
+                    indented("  ", &format!("NOT {}", failure_message))
+                } else {
+                    indented("  ", &failure_message)
+                };
+
                 message.push_str(&failure_message);
 
                 if !self.soft_mode {
