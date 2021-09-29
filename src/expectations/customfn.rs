@@ -30,7 +30,7 @@ struct ExpectCustomFn<T, F: FnOnce(&T) -> bool> {
     phantom: PhantomData<T>,
 }
 
-impl<'a, T, F> Expectation<T> for ExpectCustomFn<T, F>
+impl<T, F> Expectation<T> for ExpectCustomFn<T, F>
 where
     F: FnOnce(&T) -> bool,
 {
