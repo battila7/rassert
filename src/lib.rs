@@ -13,8 +13,11 @@ mod tests {
 
     #[test]
     fn it_works() {
-        expect!(&(20 == 20))
-            .to_be_false()
+        expect!(&vec!['a'])
+            .to_contain(&'b')
+            .and()
+            .to_contain(&'c')
+            .soft()
             .conclude_panic();
     }
 }

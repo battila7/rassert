@@ -102,7 +102,7 @@ impl<'a, T> ExpectationChain<'a, T> {
                 let failure_message = indented("  ", &failure_message);
                 message.push_str(&failure_message);
 
-                if self.soft_mode {
+                if !self.soft_mode {
                     break;
                 }
             }
