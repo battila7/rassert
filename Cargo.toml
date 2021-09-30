@@ -1,8 +1,17 @@
 [package]
 name = "rassert"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2018"
+description = "Fluent, easy-to-extend test assertion library."
+authors = ["Attila Bagossy <bagossyattila@outlook.com>"]
+categories = ["development-tools::testing"]
+keywords = ["assert", "assertion", "testing", "test", "tests"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "MIT"
+license-file = "LICENSE"
+
+homepage = "https://github.com/battila7/rassert"
+repository = "https://github.com/battila7/rassert"
+readme = "README.md"
 
 [dependencies]
