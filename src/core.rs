@@ -3,6 +3,47 @@ use std::fmt::Debug;
 #[macro_export]
 macro_rules! expect {
     ($tested:expr) => {
+        $crate::blank_chain!($tested)
+    };
+}
+
+// Originates from the assert_matches library https://github.com/murarth/assert_matches
+// Licensed under the Apache 2.0 Software License.
+#[macro_export]
+macro_rules! expect_matches {
+    ( $e:expr , $($pat:pat)|+ ) => {
+        match $e {
+            $($pat)|+ => $crate::blank_chain!($e),
+            ref e => $crate::failure_chain!($e, format!("Expected {:?} to match {}",
+                e, stringify!($($pat)|+)))
+        }
+    };
+    ( $e:expr , $($pat:pat)|+ if $cond:expr ) => {
+        match $e {
+            $($pat)|+ if $cond => $crate::blank_chain!($e),
+            ref e => $crate::failure_chain!($e, format!("Expected {:?} to match {}",
+                e, stringify!($($pat)|+ if $cond)))
+        }
+    };
+    ( $e:expr , $($pat:pat)|+ , $($arg:tt)* ) => {
+        match $e {
+            $($pat)|+ => $crate::blank_chain!($e),
+            ref e => $crate::failure_chain!($e, format!("Expected {:?} to match {}: {}",
+                e, stringify!($($pat)|+), format_args!($($arg)*)))
+        }
+    };
+    ( $e:expr , $($pat:pat)|+ if $cond:expr , $($arg:tt)* ) => {
+        match $e {
+            $($pat)|+ if $cond => $crate::blank_chain!($e),
+            ref e => $crate::failure_chain!($e, format!("Expected {:?} to match {}: {}",
+                e, stringify!($($pat)|+ if $cond), format_args!($($arg)*)))
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! blank_chain {
+    ($tested:expr) => {
         $crate::core::ExpectationChain::from_expression($crate::core::ExpressionUnderTest {
             actual: $tested,
             tested_expression: std::stringify!($tested),
@@ -12,6 +53,13 @@ macro_rules! expect {
                 column: column!(),
             },
         })
+    };
+}
+
+#[macro_export]
+macro_rules! failure_chain {
+    ($tested:expr, $message:expr) => {
+        $crate::blank_chain!($tested).failure($message)
     };
 }
 
@@ -78,6 +126,12 @@ impl<'a, T> ExpectationChain<'a, T> {
         self
     }
 
+    pub fn failure(self, message: String) -> Self {
+        self.expecting(ExpectMatchFailure {
+            preset_message: message,
+        })
+    }
+
     pub fn soft(mut self) -> Self {
         self.soft_mode = true;
 
@@ -138,4 +192,18 @@ fn indented(indentation: &str, s: &str) -> String {
         .collect();
 
     format!("{}\n", result.join("\n"))
+}
+
+struct ExpectMatchFailure {
+    preset_message: String,
+}
+
+impl<T> Expectation<T> for ExpectMatchFailure {
+    fn test(&self, _actual: &T) -> bool {
+        false
+    }
+
+    fn message(&self, _expression: &str, _actual: &T) -> String {
+        self.preset_message.clone()
+    }
 }
