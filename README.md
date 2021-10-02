@@ -48,7 +48,7 @@ mod tests {
 
     #[test]
     fn rassert_works() {
-        expect!(true)
+        expect!(&true)
             .not()
             .to_be_false()
             .and()
@@ -74,7 +74,7 @@ Once a chain is started, one can subsequently call expectations on it, as follow
 ~~~~Rust
 let v = vec![10];
 
-expect!(v)
+expect!(&v)
     .to_be_non_empty()
     .and()
     .to_contain(10);
@@ -88,13 +88,13 @@ Since rassert evaluates expectations lazily, a chain like the above one will do 
 
 ~~~~Rust
 // Will panic on a failed expectation.
-expect!(true)
+expect!(&true)
     .to_be(false)
     .conclude_panic();
 
 // Will return Result<(), String> containing the error
 // message on failure.
-let res = expect!(true)
+let res = expect!(&true)
   .to_be(false)
   .conclude_result();
 ~~~~
@@ -106,7 +106,7 @@ A chain can be put into soft mode by calling `soft()` prior to concluding the ch
 ~~~~Rust
 let v = vec![10];
 
-expect!(v)
+expect!(&v)
     .to_contain(15)
     .and()
     .to_contain(20)
@@ -121,7 +121,7 @@ Soft chains will not panic/return on the first failure, instead they will run ea
 One can negate a single subsequent expectation using the `not()` function:
 
 ~~~~Rust
-expect!(true)
+expect!(&true)
     .not()
     .to_be_false()
     .conclude_panic();
@@ -219,6 +219,18 @@ The most important bits of the above snippet are the following:
   * Extension traits must take a generic lifetime parameter and use it in the `ExpectationChain` type returned from expectation functions. This parameter corresponds to the lifetime of the immutable reference held inside the chain. This refernece then refers to the actual tested value.
   * Expectation functions must take `self` since expectation chains are [Consuming builders](https://doc.rust-lang.org/1.0.0/style/ownership/builders.html).
   * Expectation functions can extend the chain with a new expectation using the `expecting()` function. This function takes an Expectation which will be executed when concluding the chain. The fields of the expectation can be used to parameterize the actual assertion.
+
+Then, using the above expectation is as easy as
+
+~~~~Rust
+let pizza = Pizza {
+  flavor: "Hawaii".to_owned(),
+};
+
+expect!(&pizza)
+  .to_have_flavor("Margherita")
+  .conclude_panic();
+~~~~
 
 The built-in expectations of the [src/expectations](src/expectations) directory also use the above facilities, therefore they serve as a great starting point for writing custom expectations.
 
