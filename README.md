@@ -14,7 +14,7 @@
   <a href="https://github.com/battila7/rassert/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/battila7/rassert" alt="rassert uses The MIT License.">
   </a>
-  <a href="https://www.npmjs.com/package/mvnx">
+  <a href="https://crates.io/crates/rassert">
     <img src="https://img.shields.io/crates/v/rassert" alt="Current crates.io version.">
   </a>
   <a href="https://github.com/battila7/rassert/actions/workflows/continuous-integration.yml">
