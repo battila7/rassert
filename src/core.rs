@@ -45,10 +45,10 @@ macro_rules! expect_matches {
 #[macro_export]
 macro_rules! blank_chain {
     ($tested:expr) => {
-        $crate::core::ExpectationChain::from_expression($crate::core::ExpressionUnderTest {
+        $crate::ExpectationChain::from_expression($crate::ExpressionUnderTest {
             actual: $tested,
             tested_expression: std::stringify!($tested),
-            location: $crate::core::SourceLocation {
+            location: $crate::SourceLocation {
                 file: file!(),
                 line: line!(),
                 column: column!(),
