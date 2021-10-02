@@ -1,9 +1,12 @@
 use crate::core::{Expectation, ExpectationChain};
 use std::fmt::Debug;
 
+/// Expectation extension for working with [Result]s.
 pub trait ResultExpectationsExt<'a, T, E> {
+    /// Asserts that the tested [Result] is `Ok(..)`.
     fn to_be_ok(self) -> ExpectationChain<'a, Result<T, E>>;
 
+    /// Asserts that the tested [Result] is `Err(..)`.
     fn to_be_err(self) -> ExpectationChain<'a, Result<T, E>>;
 }
 
@@ -41,6 +44,8 @@ impl<T, E> Expectation<Result<T, E>> for ExpectResultErr {
     }
 }
 
+/// Expectation extension to assert the contents of an [Result] if the
+/// contained `Ok` type is [Debug] and [PartialEq].
 pub trait ResultOkExpectationsExt<'a, T, E>
 where
     T: Debug + PartialEq,

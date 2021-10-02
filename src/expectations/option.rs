@@ -1,9 +1,12 @@
 use crate::core::{Expectation, ExpectationChain};
 use std::fmt::Debug;
 
+/// Expectation extension for working with [Option]s.
 pub trait OptionExpectationsExt<'a, T> {
+    /// Asserts that the tested [Option] holds `Some` value.
     fn to_be_some(self) -> ExpectationChain<'a, Option<T>>;
 
+    /// Asserts that the tested [Option] is `None`.
     fn to_be_none(self) -> ExpectationChain<'a, Option<T>>;
 }
 
@@ -41,10 +44,13 @@ impl<T> Expectation<Option<T>> for ExpectNone {
     }
 }
 
+/// Expectation extension to assert the contents of an [Option] if the
+/// contained type is [Debug] and [PartialEq].
 pub trait OptionItemExpectationsExt<'a, T>
 where
     T: Debug + PartialEq,
 {
+    /// Asserts that the actual [Option] holds `Some(expected)`.
     fn to_contain(self, expected: &'a T) -> ExpectationChain<'a, Option<T>>;
 }
 

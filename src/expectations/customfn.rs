@@ -2,7 +2,12 @@ use crate::core::{Expectation, ExpectationChain};
 use std::cell::Cell;
 use std::marker::PhantomData;
 
+/// Expectation extension for custom assertion functions.
 pub trait CustomFnExpectationsExt<'a, T> {
+    /// Asserts that the actual value satisfies some expectation, given in the form
+    /// of a custom function. This expectation function shall return false if the expectation
+    /// does not hold and true otherwise. In the former case, rassert will display the
+    /// supplied message string.
     fn to<F: 'a + FnOnce(&T) -> bool>(
         self,
         message: &str,

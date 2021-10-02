@@ -1,5 +1,6 @@
 use std::fmt::Debug;
 
+/// Starts a new expectation chain for the supplied expression.
 #[macro_export]
 macro_rules! expect {
     ($tested:expr) => {

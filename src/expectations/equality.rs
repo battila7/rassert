@@ -1,13 +1,22 @@
 use crate::core::{Expectation, ExpectationChain};
 use std::fmt::Debug;
 
+/// Expectation extension for values that are [PartialEq] and [Debug].
 pub trait EqualityExpectationsExt<'a, T> {
+    /// Asserts that the actual value is equal to the [expected] value. The same
+    /// as the `to_be` function.
     fn to_equal(self, expected: &'a T) -> ExpectationChain<'a, T>;
 
+    /// Asserts that the actual value is equal to the [expected] value. The same
+    /// as the `to_equal` function.
     fn to_be(self, expected: &'a T) -> ExpectationChain<'a, T>;
 
+    /// Asserts that the actual value is not equal to the [expected] value. The same
+    /// as the `to_not_be` function.
     fn to_not_equal(self, expected: &'a T) -> ExpectationChain<'a, T>;
 
+    /// Asserts that the actual value is not equal to the [expected] value. The same
+    /// as the `to_not_equal` function.
     fn to_not_be(self, expected: &'a T) -> ExpectationChain<'a, T>;
 }
 

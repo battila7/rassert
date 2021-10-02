@@ -1,11 +1,15 @@
 use crate::core::{Expectation, ExpectationChain};
 use std::fmt::Debug;
 
+/// Expectation extension for working with [Vec]s.
 pub trait VectorExpectationsExt<'a, T> {
+    /// Asserts that the length of the tested vector is equal to [expected].
     fn to_have_length(self, expected: usize) -> ExpectationChain<'a, Vec<T>>;
 
+    /// Asserts that the tested vector is empty.
     fn to_be_empty(self) -> ExpectationChain<'a, Vec<T>>;
 
+    /// Asserts that the tested vector is not empty (it contains at least one item).
     fn to_be_non_empty(self) -> ExpectationChain<'a, Vec<T>>;
 }
 
@@ -68,10 +72,13 @@ impl<T> Expectation<Vec<T>> for ExpectVectorNonEmpty {
     }
 }
 
+/// Expectation extension for working with the items of a [Vec] if the
+/// contained type is [Debug] and [PartialEq].
 pub trait VectorItemExpectationsExt<'a, T>
 where
     T: Debug + PartialEq,
 {
+    /// Asserts that the tested vec contains [expected].
     fn to_contain(self, expected: &'a T) -> ExpectationChain<'a, Vec<T>>;
 }
 
